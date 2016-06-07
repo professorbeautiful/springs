@@ -18,7 +18,8 @@ ui <- shinyUI(fluidPage(
 
 # Define server logic required to draw a histogram
 server <- shinyServer(function(input, output, session) {
-   rv = reactiveValues(width=400, height=400)
+   rv = reactiveValues(width=40, height=400, 
+                       initialHeight=400, time=0)
    output$dimensions <- renderText({
      paste("width=", rv$width, "  height=", rv$height)
    })
@@ -41,7 +42,14 @@ server <- shinyServer(function(input, output, session) {
    observe ({
     if(!is.null(input$start))
       if(input$start > 0) {
-        isolate({rv$width = rv$width * 1.2})
+        isolate({
+          period = 20
+          rv$time = rv$time+1
+          # for(time in 1:100) {
+            rv$height = rv$initialHeight * 
+              (1 + sin(rv$time/period * 2 * pi))
+            
+        })
       }
    })
 })
