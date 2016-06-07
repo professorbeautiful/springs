@@ -20,6 +20,7 @@ ui <- shinyUI(fluidPage(
 server <- shinyServer(function(input, output, session) {
    rv = reactiveValues(width=40, height=400, 
                        initialHeight=400, time=0)
+   autoInvalidate <- reactiveTimer(200)
    output$dimensions <- renderText({
      paste("width=", rv$width, "  height=", rv$height)
    })
@@ -40,6 +41,7 @@ server <- shinyServer(function(input, output, session) {
           alt = "This is alternate text")
    })
    observe ({
+     autoInvalidate()
     if(!is.null(input$start))
       if(input$start > 0) {
         isolate({
@@ -48,7 +50,6 @@ server <- shinyServer(function(input, output, session) {
           # for(time in 1:100) {
             rv$height = rv$initialHeight * 
               (1 + sin(rv$time/period * 2 * pi))
-            
         })
       }
    })
