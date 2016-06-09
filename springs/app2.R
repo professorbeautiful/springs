@@ -1,7 +1,13 @@
 library(shiny)
+library(shinyDebuggingPanel)
+
 
 ui <- shinyUI(pageWithSidebar(
-  headerPanel("Springs"),
+  headerPanel(div(
+    "Springs",
+              shinyDebuggingPanel:::withDebuggingPanel()
+    ) 
+  ),
   sidebarPanel(
     actionButton("start", "start"),
     textInput("K1", "K1", value = "4e-2" ),
@@ -24,6 +30,7 @@ ui <- shinyUI(pageWithSidebar(
 
 # Define server logic required to draw a histogram
 server <- shinyServer(function(input, output, session) {
+  shinyDebuggingPanel::makeDebuggingPanelOutput(session) 
    rv = reactiveValues(width=40, 
                        height=0, 
                        momentum=0, 
