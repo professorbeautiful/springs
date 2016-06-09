@@ -50,17 +50,24 @@ server <- shinyServer(function(input, output, session) {
           height = height,  
           alt = "This is alternate text")
    })
+   
+   observe (priority=1, {
+     #autoInvalidate()
+     if(!is.null(input$start))
+       if(input$start > 0) {
+         isolate({
+           rv$time = 0 
+           rv$height = as.numeric(input$initPos)
+           rv$momentum = as.numeric(input$initMom)
+         })
+       }
+   })
    observe ({
      period = 20
      invalidateLater(as.numeric(input$refresh))
     if(!is.null(input$start))
       if(input$start > 0) {
         isolate({
-          if(rv$time == 0) {
-            rv$height = as.numeric(input$initPos)
-            rv$momentum = as.numeric(input$initMom)
-          }
-          else {
             delta_T = as.numeric(input$delta_T)
             K1 = as.numeric(input$K1)
             gravity = as.numeric(input$gravity)
@@ -69,9 +76,7 @@ server <- shinyServer(function(input, output, session) {
               force = K1 * (rv$height - rv$slackHeight) +
                 gravity
               rv$momentum = rv$momentum - force * delta_T
-              #rv$time = rv$time+1
             }
-          }
           rv$time = rv$time+1
         })
       }
