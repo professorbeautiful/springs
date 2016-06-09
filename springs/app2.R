@@ -61,12 +61,16 @@ server <- shinyServer(function(input, output, session) {
             rv$momentum = as.numeric(input$initMom)
           }
           else {
-            rv$height = rv$height + rv$momentum * delta_T
+            delta_T = as.numeric(input$delta_T)
             K1 = as.numeric(input$K1)
             gravity = as.numeric(input$gravity)
-            force = K1 * (rv$height - rv$slackHeight) +
+            if(all(!is.na(c(delta_T, K1, gravity)))) {
+              rv$height = rv$height + rv$momentum * delta_T
+              force = K1 * (rv$height - rv$slackHeight) +
                 gravity
-            rv$momentum = rv$momentum - force * delta_T
+              rv$momentum = rv$momentum - force * delta_T
+              #rv$time = rv$time+1
+            }
           }
           rv$time = rv$time+1
         })
