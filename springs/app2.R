@@ -10,8 +10,13 @@ ui <- shinyUI(pageWithSidebar(
     textInput("initMom", "initial momentum", 
               value = "0" ),
     textInput("gravity", "gravity", 
-              value = "1" )
-    ,
+              value = "1" ),
+    textInput("period", "period", 
+              value = "20" ),
+    textInput("delta_T", "delta_T", 
+              value = "1" ),
+    textInput("refresh", "refresh", 
+              value = "10" ),
     textOutput("dimensions")
   ),
   mainPanel( imageOutput("spring"))
@@ -25,7 +30,6 @@ server <- shinyServer(function(input, output, session) {
                        slackHeight=300,
                        time=0)
    delta_T = 1
-   autoInvalidate <- reactiveTimer(delta_T)
    output$dimensions <- renderText({
      paste("width=", round(rv$width),
            "  height=", round(rv$height))
@@ -48,7 +52,7 @@ server <- shinyServer(function(input, output, session) {
    })
    observe ({
      period = 20
-     autoInvalidate()
+     invalidateLater(as.numeric(input$refresh))
     if(!is.null(input$start))
       if(input$start > 0) {
         isolate({
