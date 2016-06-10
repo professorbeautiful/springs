@@ -16,8 +16,8 @@ ui <- shinyUI(pageWithSidebar(
     textInput("delta_T", "delta_T", 
               value = "0.2" ),
     textInput("refresh", "refresh", 
-              value = "10" )
-    #textOutput("dimensions")
+              value = "10" ),
+    textOutput("dimensions")
   ),
   mainPanel( imageOutput("spring"))
 ))
