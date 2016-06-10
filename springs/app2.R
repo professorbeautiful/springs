@@ -10,9 +10,9 @@ ui <- shinyUI(pageWithSidebar(
   ),
   sidebarPanel(
     actionButton("start", "start"),
-    textInput("K1", "K1", value = "4e-2" ),
+    textInput("K1", "K1", value = "2e-2" ),
     textInput("initPos", "initial displacement", 
-              value = "500" ),
+              value = "400" ),
     textInput("initMom", "initial momentum", 
               value = "0" ),
     textInput("gravity", "gravity", 
@@ -20,7 +20,7 @@ ui <- shinyUI(pageWithSidebar(
     textInput("period", "period", 
               value = "20" ),
     textInput("delta_T", "delta_T", 
-              value = "1" ),
+              value = "0.2" ),
     textInput("refresh", "refresh", 
               value = "10" ),
     textOutput("dimensions")
